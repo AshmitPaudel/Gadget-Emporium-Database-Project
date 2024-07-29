@@ -1,0 +1,579 @@
+SQL> CREATE TABLE CUSTOMERS (
+  2      "Customer ID" NUMBER PRIMARY KEY,
+  3      "Name" VARCHAR2(255),
+  4      "City" VARCHAR2(255),
+  5      "Street Address" VARCHAR2(255),
+  6      "Zip Code" VARCHAR2(10),
+  7      "Phone Number" VARCHAR2(15),
+  8      "Category" VARCHAR2(50),
+  9      "Discount Rate" NUMBER
+ 10  );
+
+Table created.
+
+SQL> CREATE TABLE ORDERS (
+  2      "Order ID" NUMBER PRIMARY KEY,
+  3      "Order Date" DATE,
+  4      "Order Quantity" NUMBER,
+  5      "Total Amount" NUMBER
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE PAYMENTS (
+  2      "Payment ID" NUMBER PRIMARY KEY,
+  3      "Payment Option" VARCHAR2(255)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE INVOICES (
+  2      "Invoice ID" NUMBER PRIMARY KEY,
+  3      "Discount Amount" NUMBER,
+  4      "Total Amount" NUMBER,
+  5      "Total Amount After Discount" NUMBER
+  6  );
+
+Table created.
+
+	SQL> CREATE TABLE PRODUCTS (
+	  2      "Product ID" NUMBER PRIMARY KEY,
+	  3      "Name" VARCHAR2(255),
+	  4      "Description" VARCHAR2(1000),
+	  5      "Category" VARCHAR2(50),
+	  6      "Price" NUMBER,
+	  7      "Stock Level" NUMBER
+	  8  );
+
+Table created.
+
+SQL> CREATE TABLE VENDORS (
+  2      "Vendor ID" NUMBER PRIMARY KEY,
+  3      "Vendor Name" VARCHAR2(255)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE CUSTOMERS_ORDERS_PAYMENTS (
+  2    "Customer ID" NUMBER,
+  3    "Order ID" NUMBER,
+  4    "Payment ID" NUMBER,
+  5   FOREIGN KEY ("Customer ID") REFERENCES CUSTOMERS("Customer ID"),
+  6    FOREIGN KEY ("Order ID") REFERENCES ORDERS("Order ID"),
+  7    FOREIGN KEY ("Payment ID") REFERENCES PAYMENTS("Payment ID")
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE CUSTOMERS_PAYMENTS_INVOICES (
+  2    "Customer ID" NUMBER,
+  3    "Payment ID" NUMBER,
+  4    "Invoice ID" NUMBER,
+  5    FOREIGN KEY ("Customer ID") REFERENCES CUSTOMERS("Customer ID"),
+  6    FOREIGN KEY ("Payment ID") REFERENCES PAYMENTS("Payment ID"),
+  7    FOREIGN KEY ("Invoice ID") REFERENCES INVOICES("Invoice ID")
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE CUSTOMERS_ORDERS (
+  2    "Customer ID" NUMBER,
+  3    "Order ID" NUMBER,
+  4    FOREIGN KEY ("Customer ID") REFERENCES CUSTOMERS("Customer ID"),
+  5    FOREIGN KEY ("Order ID") REFERENCES ORDERS("Order ID")
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE CUSTOMERS_PRODUCTS_VENDORS (
+  2    "Customer ID" NUMBER,
+  3    "Product ID" NUMBER,
+  4    "Vendor ID" NUMBER,
+  5    FOREIGN KEY ("Customer ID") REFERENCES CUSTOMERS("Customer ID"),
+  6    FOREIGN KEY ("Product ID") REFERENCES PRODUCTS("Product ID"),
+  7    FOREIGN KEY ("Vendor ID") REFERENCES VENDORS("Vendor ID")
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE ORDERS_PRODUCTS (
+  2    "Order ID" NUMBER,
+  3    "Product ID" NUMBER,
+  4    FOREIGN KEY ("Order ID") REFERENCES ORDERS("Order ID"),
+  5    FOREIGN KEY ("Product ID") REFERENCES PRODUCTS("Product ID")
+  6  );
+
+Table created.
+
+SQL> CREATE TABLE CUSTOMERS_ORDERS_PRODUCTS (
+  2    "Customer ID" NUMBER,
+  3    "Order ID" NUMBER,
+  4    "Product ID" NUMBER,
+  5    FOREIGN KEY ("Customer ID") REFERENCES CUSTOMERS("Customer ID"),
+  6    FOREIGN KEY ("Order ID") REFERENCES ORDERS("Order ID"),
+  7    FOREIGN KEY ("Product ID") REFERENCES PRODUCTS("Product ID")
+  8  );
+
+Table created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL>
+
+---
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (1, 'iPhone 13', 'Latest Apple smartphone with A15 Bionic chip', 'Smartphones', 999.99, 50);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (2, 'Dell XPS 13', 'Ultra-thin and powerful laptop for professionals', 'Laptops', 1599.99, 30);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (3, 'Sony WH-1000XM4', 'Wireless noise-canceling headphones', 'Audio Accessories', 299.99, 100);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (4, 'Samsung QLED Q80A', '65-inch 4K QLED Smart TV with Quantum HDR', 'Televisions', 1499.99, 20);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (5, 'Fitbit Charge 5', 'Advanced fitness tracker with built-in GPS', 'Wearables', 129.99, 80);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (6, 'Logitech G Pro X Superlight', 'Ultra-lightweight gaming mouse for esports', 'Gaming Accessories', 149.99, 40);
+1 row created.
+
+SQL> INSERT INTO PRODUCTS ("Product ID", "Name", "Description", "Category", "Price", "Stock Level")
+  2 VALUES (7, 'Anker PowerCore 20000', 'High-capacity portable charger with fast charging', 'Chargers', 49.99, 150);
+1 row created.
+
+---
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (1, 'Apple');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (2, 'Dell');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (3, 'Sony');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (4, 'Samsung');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (5, 'Fitbit');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (6, 'Logitech');
+
+1 row created.
+
+SQL> INSERT INTO VENDORS ("Vendor ID", "Vendor Name") VALUES (7, 'Anker');
+
+1 row created.
+
+---
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (1, 'John Doe', 'New York', '123 Main St', '10001', '555-1234', 'VIP', 10);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (2, 'Jane Smith', 'Los Angeles', '456 Oak St', '90001', '555-5678', 'Regular', 0);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (3, 'Robert Johnson', 'Chicago', '789 Pine St', '60601', '555-9101', 'Regular', 0);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (4, 'Maria Garcia', 'San Francisco', '101 Cedar St', '94101', '555-1212', 'VIP', 10);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (5, 'Michael Chen', 'Dallas', '202 Elm St', '75201', '555-1414', 'Staff', 5);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (6, 'Emily Wang', 'Seattle', '303 Maple St', '98101', '555-1616', 'Regular', 0);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS ("Customer ID", "Name", "City", "Street Address", "Zip Code", "Phone Number", "Category", "Discount Rate")
+  2 VALUES (7, 'Daniel Rodriguez', 'Miami', '404 Birch St', '33101', '555-1818', 'VIP', 10);
+1 row created.
+
+---
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (1, TO_DATE('2023-05-10', 'YYYY-MM-DD'), 2, 1999.98);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (2, TO_DATE('2023-05-15', 'YYYY-MM-DD'), 1, 1599.99);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (3, TO_DATE('2023-05-20', 'YYYY-MM-DD'), 3, 899.97);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (4, TO_DATE('2023-08-05', 'YYYY-MM-DD'), 4, 5999.96);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (5, TO_DATE('2023-08-10', 'YYYY-MM-DD'), 2, 3199.98);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (6, TO_DATE('2023-08-15', 'YYYY-MM-DD'), 1, 1499.99);
+1 row created.
+
+SQL> INSERT INTO ORDERS ("Order ID", "Order Date", "Order Quantity", "Total Amount")
+  2  VALUES (7, TO_DATE('2023-08-20', 'YYYY-MM-DD'), 3, 2999.97);
+1 row created.
+
+---
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (1, 'Credit/Debit Card');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (2, 'Cash on Delivery');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (3, 'E-Wallet');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (4, 'Credit/Debit Card');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (5, 'Cash on Delivery');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (6, 'E-Wallet');
+1 row created.
+
+SQL> INSERT INTO PAYMENTS ("Payment ID", "Payment Option")
+  2  VALUES (7, 'Credit/Debit Card');
+1 row created.
+
+---
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (1, 1);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (1, 2);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (2, 3);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (3, 4);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (4, 5);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (5, 6);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (6, 7);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (7, 8);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID")
+  2 VALUES (1, 9);
+1 row created.
+
+---
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (1, 1);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (2, 2);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (3, 3);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (4, 4);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (5, 5);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (6, 6);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (7, 7);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (8, 2);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID")
+  2  VALUES (9, 1);
+1 row created.
+
+
+---
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (1, 199.998, 1999.98, 1799.982);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (2, 159.999, 1599.99, 1439.991);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (3, 89.997, 899.97, 809.973);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (4, 599.996, 5999.96, 5399.964);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (5, 319.998, 3199.98, 2879.982);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (6, 149.999, 1499.99, 1349.991);
+1 row created.
+
+SQL> INSERT INTO INVOICES ("Invoice ID", "Discount Amount", "Total Amount", "Total Amount After Discount")
+  2  VALUES (7, 299.997, 2999.97, 2699.973);
+1 row created.
+
+---
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (1, 1);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (2, 2);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (3, 3);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (4, 4);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (5, 5);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (6, 6);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (7, 7);
+1 row created.
+
+SQL> INSERT INTO ORDERS_PRODUCTS ("Order ID", "Product ID") VALUES (7, 7);
+
+---
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (1, 1);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (2, 2);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (3, 3);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (4, 4);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (5, 5);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (6, 6);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_ORDERS ("Customer ID", "Order ID") VALUES (7, 7);
+
+1 row created.
+
+---
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (1, 1, 1);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (2, 2, 2);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (3, 3, 3);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (4, 4, 4);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (5, 5, 5);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (6, 6, 6);
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS_PRODUCTS_VENDORS ("Customer ID", "Product ID", "Vendor ID") VALUES (7, 7, 7);
+1 row created.
+
+
+
+SQL> SELECT *
+  2  FROM CUSTOMERS
+  3  WHERE "Category" = 'Staff';
+
+
+
+SQL> SELECT O.*, P."Name" AS "Product Name"
+  2  FROM ORDERS O
+  3  JOIN ORDERS_PRODUCTS OP ON O."Order ID" = OP."Order ID"
+  4  JOIN PRODUCTS P ON OP."Product ID" = P."Product ID"
+  5  WHERE O."Order Date" BETWEEN TO_DATE('2023-05-01', 'YYYY-MM-DD') AND TO_DATE('2023-05-28', 'YYYY-MM-DD');
+
+
+
+SQL> SELECT C.*, O."Order ID", O."Order Date", O."Order Quantity", O."Total Amount"
+  2  FROM CUSTOMERS C
+  3  LEFT JOIN CUSTOMERS_ORDERS CO ON C."Customer ID" = CO."Customer ID"
+  4  LEFT JOIN ORDERS O ON CO."Order ID" = O."Order ID";
+
+
+
+SQL> SELECT *
+  2  FROM PRODUCTS
+  3  WHERE SUBSTR("Name", 2, 1) = 'a' AND "Stock Level" > 50;
+
+
+SQL> SELECT C.*, O."Order ID", O."Order Date"
+  2  FROM CUSTOMERS C
+  3  JOIN CUSTOMERS_ORDERS CO ON C."Customer ID" = CO."Customer ID"
+  4  JOIN ORDERS O ON CO."Order ID" = O."Order ID"
+  5  ORDER BY O."Order Date" DESC
+  6  FETCH FIRST 1 ROW ONLY;
+
+
+
+QL> SELECT TO_CHAR(O."Order Date", 'YYYY-MM') AS "Month",
+  2         SUM(O."Total Amount") AS "Total Revenue"
+  3  FROM ORDERS O
+  4  GROUP BY TO_CHAR(O."Order Date", 'YYYY-MM')
+  5  ORDER BY "Month";
+
+SQL> SELECT *
+  2  FROM ORDERS
+  3  WHERE "Total Amount" >= (SELECT AVG("Total Amount") FROM ORDERS);
+
+
+SQL> SELECT V.*, COUNT(PV."Product ID") AS "Product Count"
+  2  FROM VENDORS V
+  3  JOIN CUSTOMERS_PRODUCTS_VENDORS PV ON V."Vendor ID" = PV."Vendor ID"
+  4  GROUP BY V."Vendor ID", V."Vendor Name"
+  5  HAVING COUNT(PV."Product ID") > 3;
+
+
+SQL> SELECT
+  2      P."Product ID",
+  3      P."Name" AS "Product Name",
+  4      P."Description",
+  5      P."Category",
+  6      P."Price",
+  7      P."Stock Level",
+  8      SUM(O."Order Quantity") AS "Total Orders"
+  9  FROM
+ 10      PRODUCTS P
+ 11  JOIN
+ 12      ORDERS_PRODUCTS OP ON P."Product ID" = OP."Product ID"
+ 13  JOIN
+ 14      ORDERS O ON OP."Order ID" = O."Order ID"
+ 15  GROUP BY
+ 16      P."Product ID",
+ 17      P."Name",
+ 18      P."Description",
+ 19      P."Category",
+ 20      P."Price",
+ 21      P."Stock Level"
+ 22  ORDER BY
+ 23      "Total Orders" DESC;
+
+
+
+SQL> SELECT *
+  2  FROM (
+  3      SELECT C.*, O."Order ID", O."Order Date", SUM(P."Price") AS "Total Spending"
+  4      FROM CUSTOMERS C
+  5      JOIN CUSTOMERS_ORDERS CO ON C."Customer ID" = CO."Customer ID"
+  6      JOIN ORDERS O ON CO."Order ID" = O."Order ID"
+  7      JOIN ORDERS_PRODUCTS OP ON O."Order ID" = OP."Order ID"
+  8      JOIN PRODUCTS P ON OP."Product ID" = P."Product ID"
+  9      WHERE TO_CHAR(O."Order Date", 'MM') = '08' 
+ 10      GROUP BY C."Customer ID", C."Name", C."City", C."Street Address", C."Zip Code", C."Phone Number", C."Category", C."Discount Rate",
+ 11               O."Order ID", O."Order Date"
+ 12      ORDER BY "Total Spending" DESC
+ 13  )
+ 14  WHERE ROWNUM <= 1;
+
+SQL> drop table CUSTOMERS_ORDERS_PRODUCTS;
+Table dropped.
+SQL> drop table ORDERS_PRODUCTS;
+Table dropped.
+SQL> drop table CUSTOMERS_PRODUCTS_VENDORS;
+Table dropped.
+SQL> drop table CUSTOMERS_ORDERS;
+Table dropped.
+SQL> drop table CUSTOMER_ORDEN_PAYMENTS;
+Table dropped.
+SQL> drop table CUSTOME_PAYMETS_INVOICES;
+Table dropped.
+SQL> drop table VENDORS;
+Table dropped.
+SQL> drop table PRODUCTS;
+Table dropped
+SQL> drop tabe INVOICES;
+Table droppd
+SLQ > drop tble PAYMNTS;
+Table dopped
+SOL > drop tble ORDRS;
+Table droppd
+SLQ > drop tbl CUSTMRS;
+Table droppd
+
+
+
+
+
+
+
+
+
+
+
+
+
